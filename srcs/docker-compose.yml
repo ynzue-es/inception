@@ -1,20 +1,48 @@
 services:
   mariadb:
-    build: ./mariadb
+    build: ./requirements/mariadb
+    volumes:
+      - db_data:/var/lib/mysql
     secrets:
-        - db_root_password
-        - db_password
+      - db_root_password
+      - db_password
+    networks:
+      - inceptionNetwork
   
+  wordpress:
+    build: ./requirements/wordpress
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_root_password
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp_data:/var/www/html
+    networks:
+      - inceptionNetwork
+    depends_on:
+      - mariadb
+
   nginx:
-    build: ./nginx
+    build: ./requirements/nginx
     ports:
       - "443:443"
+    volumes:
+      - wp_data:/var/www/html
+    networks:
+      - inceptionNetwork
+    depends_on:
+      - wordpress
 
-  wordpress:
-    build: ./wordpress
+volumes:
+  wp_data:
+  db_data:
+
+networks:
+  inceptionNetwork:
 
 secrets:
   db_root_password:
-    file: ./secrets/db_root_password.txt
+    file: ../secrets/db_root_password.txt
   db_password:
-    file: ./secrets/db_password.txt
+    file: ../secrets/db_password.txt
