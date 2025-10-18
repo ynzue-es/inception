@@ -1,15 +1,17 @@
 services:
   mariadb:
+    build: ./mariadb
     secrets:
         - db_root_password
         - db_password
   
   nginx:
+    build: ./nginx
     ports:
       - "443:443"
 
   wordpress:
-
+    build: ./wordpress
 
 secrets:
   db_root_password:
