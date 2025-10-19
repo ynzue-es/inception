@@ -25,6 +25,9 @@ services:
       WORDPRESS_ADMIN_PASSWORD_FILE: ${DB_ROOT_PASSWORD_FILE}
     volumes:
       - wp_data:/var/www/html
+    secrets:
+      - db_root_password
+      - db_password
     networks:
       - inceptionNetwork
     depends_on:
@@ -37,8 +40,6 @@ services:
       - "443:443"
     volumes:
       - wp_data:/var/www/html
-      - ./requirements/nginx/tools/nginx.crt:/etc/ssl/certs/nginx.crt
-      - ./requirements/nginx/tools/nginx.key:/etc/ssl/private/nginx.key
     networks:
       - inceptionNetwork
     depends_on:
