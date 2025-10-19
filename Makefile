@@ -6,30 +6,30 @@
 #    By: yannis <yannis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/18 09:59:49 by yannis            #+#    #+#              #
-#    Updated: 2025/10/18 17:08:25 by yannis           ###   ########.fr        #
+#    Updated: 2025/10/18 20:32:27 by yannis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 COMPOSE = cd srcs && docker compose
 
 start:
-	$(COMPOSE) build && docker compose up
+	$(COMPOSE) build && docker compose up -d
 
 build:
 	$(COMPOSE) build
 
 up:
-	$(COMPOSE) up
+	$(COMPOSE) up -d
 
 down:
 	$(COMPOSE) down
 
 clean:
-	$(COMPOSE) down -v
+	$(COMPOSE) down
 
 fclean:
-	$(COMPOSE) down -v --rmi all
+	$(COMPOSE) down --rmi all
 
 re: fclean
 	$(COMPOSE) build
-	$(COMPOSE) up
+	$(COMPOSE) up -d

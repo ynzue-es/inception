@@ -1,5 +1,6 @@
 services:
   mariadb:
+    container_name: mariadb
     build: ./requirements/mariadb
     volumes:
       - db_data:/var/lib/mysql
@@ -10,6 +11,7 @@ services:
       - inceptionNetwork
   
   wordpress:
+    container_name: wordpress
     build: ./requirements/wordpress
     environment:
       WORDPRESS_DB_HOST: mariadb:3306
@@ -24,11 +26,14 @@ services:
       - mariadb
 
   nginx:
+    container_name: nginx
     build: ./requirements/nginx
     ports:
       - "443:443"
     volumes:
       - wp_data:/var/www/html
+      - ./requirements/nginx/tools/nginx.crt:/etc/ssl/certs/nginx.crt
+      - ./requirements/nginx/tools/nginx.key:/etc/ssl/private/nginx.key
     networks:
       - inceptionNetwork
     depends_on:
