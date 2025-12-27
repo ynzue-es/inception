@@ -10,28 +10,26 @@ services:
     networks:
       - inceptionNetwork
   
-  # wordpress:
-  #   container_name: wordpress
-  #   build: ./requirements/wordpress
-  #   environment:
-  #     WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
-  #     WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-  #     WORDPRESS_DB_PASSWORD_FILE: ${DB_PASSWORD_FILE}
-  #     WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-  #     WORDPRESS_URL: ${WORDPRESS_URL}
-  #     WORDPRESS_TITLE: ${WORDPRESS_TITLE}
-  #     WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
-  #     WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
-  #     WORDPRESS_ADMIN_PASSWORD_FILE: ${DB_ROOT_PASSWORD_FILE}
-  #   volumes:
-  #     - wp_data:/var/www/html
-  #   secrets:
-  #     - db_root_password
-  #     - db_password
-  #   networks:
-  #     - inceptionNetwork
-  #   depends_on:
-  #     - mariadb
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_URL: ${WORDPRESS_URL}
+      WORDPRESS_TITLE: ${WORDPRESS_TITLE}
+      WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
+      WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
+    volumes:
+      - wp_data:/var/www/html
+    secrets:
+      - db_password
+      - wp_admin_password
+    networks:
+      - inceptionNetwork
+    depends_on:
+      - mariadb
 
   # nginx:
   #   container_name: nginx
@@ -57,3 +55,5 @@ secrets:
     file: ../secrets/db_root_password.txt
   db_password:
     file: ../secrets/db_password.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt

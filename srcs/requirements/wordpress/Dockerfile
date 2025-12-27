@@ -1,7 +1,7 @@
 FROM debian:bookworm
 
 RUN apt update \
- && apt install -y php8.2-fpm php-mysql mariadb-client curl wget less unzip \
+ && apt install -y php8.2-fpm php-mysql mariadb-client curl wget unzip \
  && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
  && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp \
  && mkdir -p /var/www/html \
@@ -13,4 +13,4 @@ RUN apt update \
 COPY tools/script.sh /usr/local/bin/script.sh
 RUN chmod +x /usr/local/bin/script.sh
 
-CMD ["/usr/local/bin/script.sh"]
+ENTRYPOINT ["/usr/local/bin/script.sh"]

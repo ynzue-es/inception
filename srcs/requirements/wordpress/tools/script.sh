@@ -2,20 +2,26 @@
 set -e
 
 DB_PASS=$(cat /run/secrets/db_password)
-DB_ROOT_PASS=$(cat /run/secrets/db_root_password)
+WP_ADMIN_PASS=$(cat /run/secrets/wp_admin_password)
 
 if [ ! -f /var/www/html/wp-config.php ]; then
-  wp config create --allow-root \
+  until mariadb -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$DB_PASS" -e "SELECT 1;" >/dev/null 2>&1; do
+    sleep 2
+  done
+
+  chown -R www-data:www-data /var/www/html
+
+  wp config create --allow-root --path=/var/www/html \
     --dbname="$WORDPRESS_DB_NAME" \
     --dbuser="$WORDPRESS_DB_USER" \
     --dbpass="$DB_PASS" \
     --dbhost="$WORDPRESS_DB_HOST"
 
-  wp core install --allow-root \
+  wp core install --allow-root --path=/var/www/html \
     --url="$WORDPRESS_URL" \
     --title="$WORDPRESS_TITLE" \
     --admin_user="$WORDPRESS_ADMIN_USER" \
-    --admin_password="$DB_ROOT_PASS" \
+    --admin_password="$WP_ADMIN_PASS" \
     --admin_email="$WORDPRESS_ADMIN_EMAIL"
 fi
 
