@@ -6,13 +6,13 @@
 #    By: ynzue-es <ynzue-es@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/18 09:59:49 by yannis            #+#    #+#              #
-#    Updated: 2026/04/16 15:02:58 by ynzue-es         ###   ########.fr        #
+#    Updated: 2026/04/16 16:41:45 by ynzue-es         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= inception
 COMPOSE		= cd srcs && docker compose
-DATA_DIR	= /home/ynzue-es/data
+DATA_DIR	= /home/$(shell whoami)/data
 
 all: start
 
@@ -36,8 +36,8 @@ clean:
 
 fclean: clean
 	$(COMPOSE) down --rmi all -v --remove-orphans
-	@docker system prune -af --volumes
-	@sudo rm -rf $(DATA_DIR)/mariadb/* $(DATA_DIR)/wordpress/*
+	@sudo rm -rf $(DATA_DIR)/mariadb/* $(DATA_DIR)/mariadb/.[!.]* 2>/dev/null || true
+	@sudo rm -rf $(DATA_DIR)/wordpress/* $(DATA_DIR)/wordpress/.[!.]* 2>/dev/null || true
 
 re: fclean start
 
