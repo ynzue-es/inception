@@ -45,7 +45,17 @@ services:
 
 volumes:
   wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ynzue-es/data/wordpress
   db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ynzue-es/data/mariadb
 
 networks:
   inceptionNetwork:
