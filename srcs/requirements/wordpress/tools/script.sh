@@ -3,6 +3,7 @@ set -e
 
 DB_PASS=$(cat /run/secrets/db_password)
 WP_ADMIN_PASS=$(cat /run/secrets/wp_admin_password)
+WP_USER_PASS=$(cat /run/secrets/wp_user_password)
 
 if [ ! -f /var/www/html/wp-config.php ]; then
   until mariadb -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$DB_PASS" -e "SELECT 1;" >/dev/null 2>&1; do
@@ -23,6 +24,11 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     --admin_user="$WORDPRESS_ADMIN_USER" \
     --admin_password="$WP_ADMIN_PASS" \
     --admin_email="$WORDPRESS_ADMIN_EMAIL"
+
+  wp user create --allow-root --path=/var/www/html \
+    "$WORDPRESS_USER" "$WORDPRESS_USER_EMAIL" \
+    --user_pass="$WP_USER_PASS" \
+    --role=author
 fi
 
 exec php-fpm8.2 -F
