@@ -97,7 +97,7 @@ openssl req -x509 -nodes -days 365 \
 
 | Target | Description |
 |---|---|
-| `make` / `make all` | Build images and start containers in detached mode |
+| `make start` | Build images and start containers in detached mode |
 | `make down` | Stop and remove containers and networks |
 | `make clean` | `down` + remove volumes and images |
 | `make re` | `clean` then `all` |
@@ -111,7 +111,7 @@ sudo mkdir -p /home/<login>/data/mariadb
 
 ### Build Details
 
-All images are built from scratch using `docker compose build`. No image is pulled from Docker Hub except the base OS layer (`alpine:3.x` or `debian:bookworm`). The build context for each service is its own directory under `srcs/requirements/`.
+All images are built from scratch using `docker compose build`. No image is pulled from Docker Hub except the base OS layer (`debian:bookworm`). The build context for each service is its own directory under `srcs/requirements/`.
 
 ## Managing Containers and Volumes
 
