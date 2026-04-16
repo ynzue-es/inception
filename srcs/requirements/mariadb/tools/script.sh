@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+mkdir -p /run/mysqld
+chown -R mysql:mysql /run/mysqld
+
 DB_PASS=$(cat /run/secrets/db_password)
 DB_ROOT_PASS=$(cat /run/secrets/db_root_password)
 
