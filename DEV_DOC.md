@@ -1,3 +1,4 @@
+# This project has been created as part of the 42 curriculum by ynzue-es
 # Developer Documentation — Inception
 
 ## Setting Up the Environment from Scratch
